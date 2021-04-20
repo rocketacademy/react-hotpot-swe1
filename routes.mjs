@@ -8,6 +8,8 @@ export default function routes(app) {
   const billsController = initBillsController(db);
   const peopleController = initPeopleController(db);
 
+  app.post("/bill", billsController.create);
+
   // special JS page. Include the webpack index.html file
   app.get("/home", (request, response) => {
     response.sendFile(resolve("dist", "main.html"));

@@ -1,5 +1,3 @@
-// db is an argument to this function so
-// that we can make db queries inside
 export default function initBillsController(db) {
   const index = async (request, response) => {
     try {
@@ -9,9 +7,19 @@ export default function initBillsController(db) {
     }
   };
 
-  // return all methods we define in an object
-  // refer to the routes file above to see this used
+  const create = async (request, response) => {
+    try {
+      console.log("I am in backend");
+      console.log(request.body);
+      const newBill = await db.Bill.create({ name: request.body.bill });
+      response.send(newBill);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return {
     index,
+    create,
   };
 }
