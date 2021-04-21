@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import BillForm from "./components/BillForm.jsx";
 import InfoInput from "./components/InfoInput.jsx";
 import ItemList from "./components/ItemList.jsx";
+import Total from "./components/Total.jsx";
 
 export default function App() {
   const [billIndex, setBillIndex] = useState();
@@ -41,7 +42,12 @@ export default function App() {
       {billIndex && (
         <InfoInput addItemToTop={addToList} addPersonToTop={addPerson} />
       )}
-      <ItemList items={items} people={people} />
+      <div className="row">
+        <div className="col-8">
+          {billIndex && <ItemList items={items} people={people} />}
+        </div>
+        <div className="col-4">{billIndex && <Total items={items} />}</div>
+      </div>
     </div>
   );
 }

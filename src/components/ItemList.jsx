@@ -110,7 +110,7 @@ export default function ItemList({ items, people }) {
 
   return (
     <div className="row">
-      <h1 className="text-center my-4">ItemList</h1>
+      <h1 className="text-center my-2">Items List</h1>
       <div id="items-lists">{jsxItems}</div>
     </div>
   );

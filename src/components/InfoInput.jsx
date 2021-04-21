@@ -48,7 +48,7 @@ export default function InfoInput({ addItemToTop, addPersonToTop }) {
 
   return (
     <div className="row">
-      <h1 className="text-center my-4">Input information here</h1>
+      <h1 className="text-center my-4">Add Items / People</h1>
       {/* ITEM INPUT */}
       <div className="col-5">
         <input
@@ -75,10 +75,9 @@ export default function InfoInput({ addItemToTop, addPersonToTop }) {
           Add Item
         </button>
       </div>
-      <hr className="my-2"></hr>
 
       {/* PERSON INPUT */}
-      <div className="col-9">
+      <div className="col-9 mt-3">
         <input
           className="form-control"
           type="text"
@@ -88,11 +87,12 @@ export default function InfoInput({ addItemToTop, addPersonToTop }) {
         />
       </div>
 
-      <div className="col-3">
+      <div className="col-3 mt-3">
         <button className="btn btn-primary" onClick={addPerson}>
           Add Person
         </button>
       </div>
+      <hr className="my-4"></hr>
     </div>
   );
 }
