@@ -40,11 +40,8 @@ export default function InfoInput({ addItemToTop, addPersonToTop }) {
   const addPerson = () => {
     addPersonToTop(person);
     setPerson("");
+    console.log(`about to post ${person}`);
   };
-
-  // console.log(`Item: ${item}`);
-  // console.log(`Price: ${price}`);
-  // console.log(`Person: ${person}`);
 
   return (
     <div className="row">

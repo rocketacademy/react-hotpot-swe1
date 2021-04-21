@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 import BillForm from "./components/BillForm.jsx";
 import InfoInput from "./components/InfoInput.jsx";
@@ -9,19 +10,49 @@ export default function App() {
   const [billIndex, setBillIndex] = useState();
   const [items, setItems] = useState([]);
   const [people, setPeople] = useState([]);
+  const [total, setTotal] = useState(0);
+
+  const updatePeople = (person, amount) => {
+    axios
+      .put("person", { person, amount })
+      .then((result) => {
+        console.log("updated");
+      })
+      .catch((error) => console.log(error));
+  };
+
+  // const addPayeeToItem = (item, payee) => {
+  //   item.payees;
+  // };
+
+  const updateTotal = (sum) => {
+    axios
+      .put("bill", { sum, billIndex })
+      .then((result) => {
+        setTotal(sum);
+        console.log("bill updated");
+      })
+      .catch((error) => console.log(error));
+  };
 
   const setTopBill = (inputIndex) => {
     setBillIndex(inputIndex);
   };
 
   const addPerson = (name) => {
-    setPeople([...people, name]);
+    axios
+      .post("/person", { name, billIndex })
+      .then((result) => {
+        console.log("posted");
+        setPeople([...people, name]);
+      })
+      .catch((error) => console.log(error));
   };
 
   const addToList = (item, price) => {
     console.log(`item received: ${item}`);
     console.log(`price received: ${price}`);
-    const newItem = { item, price };
+    const newItem = { item, price, payees: [] };
     setItems([...items, newItem]);
   };
 
@@ -42,11 +73,25 @@ export default function App() {
       {billIndex && (
         <InfoInput addItemToTop={addToList} addPersonToTop={addPerson} />
       )}
-      <div className="row">
+      <div className="row mb-4">
         <div className="col-8">
-          {billIndex && <ItemList items={items} people={people} />}
+          {billIndex && (
+            <ItemList
+              items={items}
+              people={people}
+              updatePeople={updatePeople}
+            />
+          )}
         </div>
-        <div className="col-4">{billIndex && <Total items={items} />}</div>
+        <div className="ml-2 col-4">
+          {billIndex && (
+            <Total
+              items={items}
+              updateTotal={updateTotal}
+              billIndex={billIndex}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

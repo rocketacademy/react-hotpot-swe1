@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-export default function Total({ items }) {
+export default function Total({ items, updateTotal, billIndex }) {
   let sum = 0;
 
   items.forEach((item) => {
@@ -9,6 +9,8 @@ export default function Total({ items }) {
   });
 
   console.log(`the total is ${sum}`);
+
+  updateTotal(sum);
 
   const itemsSummary = items.map((item) => {
     return (
@@ -23,7 +25,7 @@ export default function Total({ items }) {
 
   return (
     <div className="row">
-      <h1 className="text-center my-2">Summary</h1>
+      <h1 className="my-2">Summary</h1>
 
       <h3 className="mt-2">Bill</h3>
       {itemsSummary}

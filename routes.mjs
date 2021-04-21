@@ -9,6 +9,11 @@ export default function routes(app) {
   const peopleController = initPeopleController(db);
 
   app.post("/bill", billsController.create);
+  app.put("/bill", billsController.update);
+
+  app.get("/person", peopleController.index);
+  app.post("/person", peopleController.create);
+  app.put("/person", peopleController.update);
 
   // special JS page. Include the webpack index.html file
   app.get("/home", (request, response) => {
