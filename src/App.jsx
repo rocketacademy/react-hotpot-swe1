@@ -41,6 +41,7 @@ export default function App() {
       {billIndex && (
         <InfoInput addItemToTop={addToList} addPersonToTop={addPerson} />
       )}
+      <ItemList items={items} people={people} />
     </div>
   );
 }
