@@ -9,8 +9,6 @@ export default function initBillsController(db) {
 
   const create = async (request, response) => {
     try {
-      console.log("I am in backend");
-      console.log(request.body);
       const newBill = await db.Bill.create({ name: request.body.bill });
       response.send(newBill);
     } catch (error) {

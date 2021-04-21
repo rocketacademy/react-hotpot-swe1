@@ -1,23 +1,19 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-export default function BillForm({ setTopBill }) {
+export default function BillForm({ sendBillIndex }) {
   const [bill, setBill] = useState("");
 
   const handleBillChange = (event) => {
     const inputBill = event.target.value;
     setBill(inputBill);
-    console.log(bill);
   };
 
   const createBill = () => {
-    console.log("button clicked");
-    console.log(`about to submit ${bill}`);
     axios
       .post("/bill", { bill })
       .then((result) => {
-        console.log(result.data.id);
-        setTopBill(result.data.id);
+        sendBillIndex(result.data.id);
       })
       .catch((error) => console.log(error));
   };
