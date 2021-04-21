@@ -19,15 +19,15 @@ export default function App() {
   };
 
   console.log(`Bill index: ${billIndex}`);
-  console.log(`List of items: ${items}`);
+  console.log(`~~~~ List of items ~~~~`);
   items.forEach((item) => {
     console.log(`${item.item} at $${item.price}`);
   });
 
   return (
     <div className="container mt-4">
-      <BillForm sendBillIndex={setTopBill} />
-      <InfoInput addItemToTop={addToList} />
+      {!billIndex && <BillForm sendBillIndex={setTopBill} />}
+      {billIndex && <InfoInput addItemToTop={addToList} />}
     </div>
   );
 }
