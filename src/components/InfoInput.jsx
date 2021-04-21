@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-export default function InfoInput({ addItemToTop }) {
+export default function InfoInput({ addItemToTop, addPersonToTop }) {
   const [item, setItem] = useState();
   const [price, setPrice] = useState();
   const [person, setPerson] = useState();
@@ -29,13 +29,18 @@ export default function InfoInput({ addItemToTop }) {
       console.log(`Item: ${item}`);
       console.log(`Price: ${price}`);
       addItemToTop(item, price);
+      setItem("");
+      setPrice("");
     } else {
       errorMsg = "you might've forgotten somthing";
       console.log(errorMsg);
     }
   };
 
-  const addPerson = () => {};
+  const addPerson = () => {
+    addPersonToTop(person);
+    setPerson("");
+  };
 
   // console.log(`Item: ${item}`);
   // console.log(`Price: ${price}`);
