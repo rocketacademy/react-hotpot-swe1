@@ -1,3 +1,24 @@
 body {
   background-color: pink;
 }
+
+.create-bill-form {
+  display: flex;
+  justify-content: space-around;
+}
+
+.create-bill-header {
+  text-align: center;
+}
+
+.inputs-container {
+  background-color: white;
+  margin: 20px;
+  padding: 15px;
+}
+
+.item-list-container {
+  background-color: white;
+  margin: 20px;
+  padding: 15px;
+}
