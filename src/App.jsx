@@ -15,7 +15,7 @@ export default function App() {
 
   // Send all the info to the database
   const handleSaveBill = () => {
-
+    console.log(person);
   };
 
   return (

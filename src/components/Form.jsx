@@ -30,9 +30,9 @@ const PersonForm = ({ person, setPerson }) => {
   const [personName, setPersonName] = useState('');
 
   const handlePerson = () => {
-    setPerson([...person, { name: personName }]);
+    setPerson([...person, { name: personName, items: [] }]);
     setPersonName('');
-    console.log([...person, { name: personName }]);
+    console.log([...person, { name: personName, items: [] }]);
   };
 
   return (

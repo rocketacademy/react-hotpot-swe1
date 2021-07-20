@@ -3,59 +3,57 @@ import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 
 // item -> used to populate read-only div
 // person -> populate the dropdown
-const ItemList = ({ item, person, setPerson }) => {
-  // Create options needed for react-multiselect library
-  const options = [];
-  // personIndex is used to search & store amount
-  person.forEach((hotpotPerson, personIndex) => {
-    const hotpotPersonObject = {};
-    hotpotPersonObject.label = hotpotPerson.name;
-    hotpotPersonObject.value = personIndex;
-    options.push(hotpotPersonObject);
-  });
+const ItemList = ({ item, person }) => {
+  // We can pass itemIndex in the anonymous function
+  // onChange is provided by the NPM library to take in value and event as parameters
+  const PersonDropdown = ({ itemIndex }) => {
+    // Create options needed for react-multiselect library
+    const options = [];
+    // personIndex is used to search & store amount
+    person.forEach((hotpotPerson, personIndex) => {
+      const hotpotPersonObject = {};
+      hotpotPersonObject.label = hotpotPerson.name;
+      hotpotPersonObject.value = personIndex;
+      options.push(hotpotPersonObject);
+    });
 
-  const handlePersonDropdown = (e, itemIndex) => {
-    // peopleSelected = [ {label: Sam, value: 0}, ...]
-    // [ {dropdown 1, hotpotItem: 1}] ≠ [ {dropdown 2 Sam, hotpotItem: 2 }]
+    // selectedOptions = array of user indices that are selected
+    const [selectedOptions, setSelectedOptions] = useState(options);
 
-    /* we can kick out all the indices of people who are included to be left with an array of objects of people who are excluded  */
-    const peopleSelected = e.value;
+    // on event.action => "select-option", "deselect-option"
+    const onChange = (value, event, itemIndex) => {
+      const { action } = event;
+      const userIndex = event.option.value;
 
-    // Store all the people names
-    const peopleNamesSelected = [];
-    for (let i = 0; i < peopleSelected.length; i += 1) {
-      peopleNamesSelected.push(peopleSelected.label);
-    }
-
-    // Remove all item index from the other people not included inside peopleSelected
-    // peopleExcluded = [ Kai, Tong, ... ]
-    const peopleExcluded = person.filter((p) => !peopleSelected.includes(p.name));
-
-    // For each index inside the peopleSelected list, add the item index to their items key
-    for (let i = 0; i < peopleSelected.length; i += 1) {
-      // personIndex = Literal position of the hotpotPerson inside the array of person
-      const personIndex = peopleSelected[i];
-
-      // We grab hold of the actual person object from the parent here
-      // person[personIndex]
-
-      // push a new itemIndex into the items array, pushing value in place via key
-      // If p.items doesn't have itemIndex inside the array
-      if (!person[personIndex].items.includes(itemIndex)) {
-        person[personIndex].items = [...person[personIndex].items, itemIndex];
-        setPerson([...person]);
+      switch (action) {
+        case 'select-option':
+          // add the itemIndex to the person object's items array
+          // person[userIndex].items.push(itemIndex);
+          setSelectedOptions([...selectedOptions, userIndex]);
+          break;
+        case 'deselect-option':
+          const remainingItemsArr = selectedOptions.filter((name) => name !== userIndex);
+          setSelectedOptions(remainingItemsArr);
+          break;
+        default:
+          break;
       }
-    }
-  };
+    };
 
-  // handlePersonDropdown is called when the user clicks on the dropdown options
-  const PersonDropdown = ({ itemIndex }) => (
-    <ReactMultiSelectCheckboxes options={options} getDropdownButtonLabel={(e) => handlePersonDropdown(e, itemIndex)} />
-  );
+    return (
+      <ReactMultiSelectCheckboxes
+        options={options}
+        // We use local state to store the selected checkbox items for each person
+        value={selectedOptions}
+        // setState={setSelectedOptions}
+        onChange={(value, event) => { onChange(value, event, itemIndex); }}
+      />
+    );
+  };
 
   return (
     item.map((hotpotItem, itemIndex) => (
-      <div>
+      <div key={itemIndex}>
         <p>{hotpotItem.name}</p>
         <p>{hotpotItem.price}</p>
         <PersonDropdown itemIndex={itemIndex} />
@@ -66,8 +64,8 @@ const ItemList = ({ item, person, setPerson }) => {
 
 // view person + amount they amount owed
 const PersonList = ({ person }) => (
-  person.map((hotpotPerson) => (
-    <div>
+  person.map((hotpotPerson, index) => (
+    <div key={index}>
       <p>{hotpotPerson.name}</p>
       <p>{hotpotPerson.amount}</p>
     </div>
@@ -102,7 +100,16 @@ export default function Bill({ item, person, setPerson }) {
 //     -- ItemList() -> Item + person dropdown
 //           -- Each item name + item price
 //           -- Person Dropdown -> person index, item index
+//                --- [selectedOptions, setSelectedOptions]
+//                 -> object => { personId: [ array of itemIds ] , 2: [ 101, 102, 103], ... }
+
 // For amount each person owes -> item price / number of people (personSelected array)
 // Associate that same amount to that person index
+//
+// onclose Prop -> setPerson state
+
+//  -- Save Bill --
+//                 -> calculations
+//                 -> send name, amount to people database
 
 //     -- PersonList() -> Person name + amount they
