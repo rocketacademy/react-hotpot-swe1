@@ -26,13 +26,20 @@ const ItemForm = ({ item, setItem }) => {
   );
 };
 
-const PersonForm = ({ person, setPerson }) => {
+const PersonForm = ({ item, person, setPerson }) => {
+  const itemIndices = [];
+  for (let i = 0; i < item.length; i += 1) {
+    itemIndices.push(i);
+  }
+
   const [personName, setPersonName] = useState('');
 
   const handlePerson = () => {
-    setPerson([...person, { name: personName, items: [] }]);
+    // by default, each person will have all the items selected
+    // items is an array of item indexes
+    setPerson([...person, { name: personName, items: [...itemIndices] }]);
     setPersonName('');
-    console.log([...person, { name: personName, items: [] }]);
+    console.log([...person, { name: personName, items: [...itemIndices] }]);
   };
 
   return (
@@ -49,7 +56,7 @@ export default function Form({
   return (
     <div>
       <ItemForm item={item} setItem={setItem} />
-      <PersonForm person={person} setPerson={setPerson} />
+      <PersonForm item={item} person={person} setPerson={setPerson} />
     </div>
   );
 }

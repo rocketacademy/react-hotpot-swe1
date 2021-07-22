@@ -1,44 +1,69 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 
 //  ------ 2. separate components into different files
+
 // item -> used to populate read-only div
 // person -> populate the dropdown
-const ItemList = ({ item, person }) => {
+const ItemList = ({ item, person, setPerson }) => {
   // We can pass itemIndex in the anonymous function
   // onChange is provided by the NPM library to take in value and event as parameters
   const PersonDropdown = ({ itemIndex }) => {
+    // local state for options to keep track of updated people
     // Create options needed for react-multiselect library
-    const options = [];
-    // personIndex is used to search & store amount
-    person.forEach((hotpotPerson, personIndex) => {
-      const hotpotPersonObject = {};
-      hotpotPersonObject.label = hotpotPerson.name;
-      hotpotPersonObject.value = personIndex;
-      options.push(hotpotPersonObject);
-    });
+    const [options, setOptions] = useState([]);
 
+    // Initialize the options array so it represents only the changes in the persons array (from <app/>)
+    useEffect(() => {
+      const array = [];
+      // personIndex is used to search & store amount
+      person.forEach((personOption, personIndex) => {
+        const personOptionObject = {};
+        personOptionObject.label = personOption.name;
+        personOptionObject.value = personIndex;
+        array.push(personOptionObject);
+      });
+      setOptions(array);
+    }, [person]);
+
+    // We store the value selectedOptions as a local state so dropdown renders correctly
     // selectedOptions is an array of objects [ { label: sam, value: 0 }, ...]
-    const [selectedOptions, setSelectedOptions] = useState(options);
+    const [selectedOptions, setSelectedOptions] = useState([...options]);
 
     // on event.action => "select-option", "deselect-option"
     const onChange = (value, event, itemIndex) => {
       const { action } = event;
+      const userOption = event.option;
       const userIndex = event.option.value;
+      // userOption = {label:..., value:...}
 
       switch (action) {
         case 'select-option':
+          // Modifies the dropdown
+          setSelectedOptions([...selectedOptions, userOption]);
+
+          // Modifies the person in <App/> parent
           // add the itemIndex to the person object's items array
-          // person[userIndex].items.push(itemIndex);
-          // --------- 1. update with object
-          setSelectedOptions([...selectedOptions, userIndex]);
+          const addedIndexArray = [...person[userIndex].items, itemIndex];
+          person[userIndex].items = addedIndexArray;
+          setPerson(person);
           break;
         case 'deselect-option':
+          // Modifies the dropdown
+          console.log('user options', userOption);
           const remainingItemsArr = selectedOptions.filter(
-            (nameOptionObject) => nameOptionObject.value !== userIndex,
+            (nameOptionObject) => nameOptionObject.value !== userOption.value,
           );
-          console.log(remainingItemsArr);
           setSelectedOptions(remainingItemsArr);
+          console.log('selected options', selectedOptions);
+          console.log('remainingItemsArr', remainingItemsArr);
+
+          // Modifies the person in <App/>
+          const removedIndexArray = person[userIndex].items.filter(
+            (currentItemIndex) => currentItemIndex !== itemIndex,
+          );
+          setPerson(removedIndexArray);
+
           break;
         default:
           break;
@@ -69,17 +94,17 @@ const ItemList = ({ item, person }) => {
 
 // view person + amount they amount owed
 const PersonList = ({ person }) => (
-  person.map((hotpotPerson, index) => (
+  person.map((personOption, index) => (
     <div key={index}>
-      <p>{hotpotPerson.name}</p>
-      <p>{hotpotPerson.amount}</p>
+      <p>{personOption.name}</p>
+      <p>{personOption.amount}</p>
     </div>
   ))
 );
 
 export default function Bill({ item, person, setPerson }) {
   const handleAddPerson = () => {
-    console.log('clicked');
+    console.log(person);
   };
 
   return (
