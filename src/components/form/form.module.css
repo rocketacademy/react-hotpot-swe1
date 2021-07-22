@@ -1,0 +1,18 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 10px;
+  align-items: ;
+  justify-content: space-between;
+  margin-top: 10%;
+  padding: 10%;
+  background-color: blue;
+}
+
+.button {
+  align-self: flex-start;
+}
+.ul {
+  list-style: none;
+  color: #fff;
+}

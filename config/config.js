@@ -1,8 +1,8 @@
 module.exports = {
   development: {
-    username: '<YOUR_USER_NAME>',
+    username: 'zaffere',
     password: null,
-    database: '<YOUR_APP_NAME>_development',
+    database: 'hot_pot_bills',
     host: '127.0.0.1',
     dialect: 'postgres',
   },

@@ -1,0 +1,13 @@
+.form {
+  background-color: purple;
+  padding: 10%;
+  margin: 10%;
+  display: flex;
+  flex-direction: column;
+} 
+
+
+
+.button {
+  align-self: flex-start;
+}
