@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 
+//  ------ 2. separate components into different files
 // item -> used to populate read-only div
 // person -> populate the dropdown
 const ItemList = ({ item, person }) => {
@@ -17,7 +18,7 @@ const ItemList = ({ item, person }) => {
       options.push(hotpotPersonObject);
     });
 
-    // selectedOptions = array of user indices that are selected
+    // selectedOptions is an array of objects [ { label: sam, value: 0 }, ...]
     const [selectedOptions, setSelectedOptions] = useState(options);
 
     // on event.action => "select-option", "deselect-option"
@@ -29,10 +30,14 @@ const ItemList = ({ item, person }) => {
         case 'select-option':
           // add the itemIndex to the person object's items array
           // person[userIndex].items.push(itemIndex);
+          // --------- 1. update with object
           setSelectedOptions([...selectedOptions, userIndex]);
           break;
         case 'deselect-option':
-          const remainingItemsArr = selectedOptions.filter((name) => name !== userIndex);
+          const remainingItemsArr = selectedOptions.filter(
+            (nameOptionObject) => nameOptionObject.value !== userIndex,
+          );
+          console.log(remainingItemsArr);
           setSelectedOptions(remainingItemsArr);
           break;
         default:
